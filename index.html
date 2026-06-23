@@ -1,1 +1,134 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SmartKit — Utilities & Tools</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Segoe UI',sans-serif;background:#f0f4ff;min-height:100vh;}
+.header{background:linear-gradient(135deg,#1a237e,#283593);color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:100;}
+.header h1{font-size:20px;font-weight:700;letter-spacing:1px;}
+.header p{font-size:11px;opacity:0.8;margin-top:2px;}
+.lang-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+.lang-btn{padding:5px 18px;border-radius:20px;border:none;font-size:13px;font-weight:700;cursor:pointer;}
+.lang-btn.on{background:#fff;color:#1a237e;}
+.lang-btn.off{background:rgba(255,255,255,0.2);color:#fff;}
+.banner-ad{background:#e8f5e9;border:1px dashed #66bb6a;text-align:center;font-size:11px;color:#2e7d32;padding:7px;margin:8px 12px;border-radius:8px;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px;}
+.tool-card{background:#fff;border-radius:16px;padding:16px 12px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(26,35,126,0.08);transition:transform 0.12s;}
+.tool-card:active{transform:scale(0.96);}
+.tool-card .icon{font-size:30px;margin-bottom:8px;}
+.tool-card .name{font-size:13px;font-weight:700;color:#1a237e;}
+.tool-card .desc{font-size:10px;color:#888;margin-top:3px;}
+.screen{display:none;padding:12px;}
+.screen.active{display:block;}
+.back{display:flex;align-items:center;gap:6px;font-size:13px;color:#1a237e;font-weight:700;cursor:pointer;background:none;border:none;padding:0 0 12px 0;}
+.tool-header{background:linear-gradient(135deg,#1a237e,#283593);border-radius:16px;padding:18px;text-align:center;color:#fff;margin-bottom:12px;}
+.tool-header .icon{font-size:36px;}
+.tool-header h2{font-size:17px;font-weight:700;margin-top:6px;}
+.input-group{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(26,35,126,0.06);}
+.input-group label{font-size:12px;color:#1a237e;font-weight:700;display:block;margin-bottom:6px;}
+.input-group input{width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;outline:none;}
+.input-group input:focus{border-color:#1a237e;}
+.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,#1a237e,#283593);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.result-box{background:#e8eaf6;border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;display:none;}
+.result-box .result-label{font-size:12px;color:#3949ab;font-weight:700;margin-bottom:4px;}
+.result-box .result-value{font-size:22px;font-weight:700;color:#1a237e;}
+.result-box .result-sub{font-size:11px;color:#5c6bc0;margin-top:4px;}
+.valid-box{border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;display:none;}
+.valid-box.valid{background:#e8f5e9;border:2px solid #66bb6a;}
+.valid-box.invalid{background:#ffebee;border:2px solid #ef9a9a;}
+.valid-box p{font-size:16px;font-weight:700;}
+.valid-box.valid p{color:#2e7d32;}
+.valid-box.invalid p{color:#c62828;}
+.tip{background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 10px 10px 0;padding:10px 12px;font-size:12px;color:#e65100;margin-bottom:10px;}
+.nav{display:flex;background:#fff;border-top:1px solid #eee;position:sticky;bottom:0;box-shadow:0 -2px 8px rgba(0,0,0,0.06);}
+.nitem{flex:1;text-align:center;padding:10px 0 6px;cursor:pointer;font-size:9px;color:#bbb;border:none;background:none;}
+.nitem.on{color:#1a237e;}
+.nitem span{display:block;font-size:20px;margin-bottom:2px;}
+.ad-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.65);z-index:999;justify-content:center;align-items:center;}
+.ad-box{background:#fff;border-radius:18px;padding:22px;width:88%;max-width:340px;text-align:center;}
+.ad-box .al{font-size:10px;color:#aaa;margin-bottom:6px;}
+.ad-box .ac{background:#e8eaf6;border-radius:10px;padding:16px;margin-bottom:12px;}
+.ad-box .ac p{font-size:13px;color:#1a237e;font-weight:600;}
+.ad-box .ac small{font-size:11px;color:#3949ab;display:block;margin-top:4px;}
+.ad-close{font-size:12px;color:#1a237e;font-weight:700;cursor:pointer;background:none;border:none;}
+.select-input{width:100%;padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;outline:none;background:#fff;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>⚡ SmartKit</h1>
+  <p id="hSub">Utilities & Tools</p>
+  <div class="lang-row">
+    <button class="lang-btn on" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lang-btn off" onclick="setLang('pt')">🇧🇷 Português</button>
+  </div>
+</div>
+<div id="homeScreen" class="screen active">
+  <div class="banner-ad">📢 AdMob Banner Ad — Real ad yethey</div>
+  <div class="grid" id="toolGrid"></div>
+</div>
+<div id="toolScreen" class="screen">
+  <button class="back" onclick="goHome()">← <span id="backTxt">Back</span></button>
+  <div class="tool-header">
+    <div class="icon" id="tIcon"></div>
+    <h2 id="tName"></h2>
+  </div>
+  <div class="banner-ad">📢 AdMob Banner Ad</div>
+  <div id="toolContent"></div>
+</div>
+<nav class="nav">
+  <button class="nitem on" onclick="goHome()"><span>🏠</span><span id="n0">Home</span></button>
+  <button class="nitem" onclick="showFav()"><span>⭐</span><span id="n1">Favorites</span></button>
+  <button class="nitem" onclick="shareApp()"><span>📤</span><span id="n2">Share</span></button>
+</nav>
+<div class="ad-overlay" id="adOverlay">
+  <div class="ad-box">
+    <div class="al">ADVERTISEMENT</div>
+    <div class="ac">
+      <p>📱 AdMob Interstitial Ad</p>
+      <small>Tool open kelta ad dikhto → paise miltat!</small>
+    </div>
+    <button class="ad-close" id="adCloseBtn">✕ <span id="closeStr">Close</span></button>
+  </div>
+</div>
+<script>
+const T={en:{sub:'Utilities & Tools',back:'Back',nav:['Home','Favorites','Share'],close:'Close',tools:[{icon:'🪪',name:'CPF Validator',desc:'Validate Brazilian CPF number'},{icon:'🏢',name:'CNPJ Validator',desc:'Validate company registration'},{icon:'💰',name:'Salary Calculator',desc:'Calculate net salary & tax'},{icon:'🏦',name:'FGTS Simulator',desc:'Calculate FGTS balance'},{icon:'💱',name:'Currency Converter',desc:'BRL to USD, EUR, INR & more'},{icon:'📊',name:'Interest Calculator',desc:'Simple & compound interest'},{icon:'🏷️',name:'Discount Calculator',desc:'Calculate sale discounts'},{icon:'⚖️',name:'BMI Calculator',desc:'Body Mass Index calculator'},{icon:'🔐',name:'Password Generator',desc:'Generate strong passwords'},{icon:'📐',name:'Unit Converter',desc:'Length, weight, temperature'}]},pt:{sub:'Utilitários & Ferramentas',back:'Voltar',nav:['Início','Favoritos','Compartilhar'],close:'Fechar',tools:[{icon:'🪪',name:'Validador CPF',desc:'Valide seu número de CPF'},{icon:'🏢',name:'Validador CNPJ',desc:'Valide CNPJ de empresa'},{icon:'💰',name:'Calculadora Salário',desc:'Calcule salário líquido e impostos'},{icon:'🏦',name:'Simulador FGTS',desc:'Calcule saldo do FGTS'},{icon:'💱',name:'Conversor Moeda',desc:'BRL para USD, EUR e mais'},{icon:'📊',name:'Calculadora Juros',desc:'Juros simples e compostos'},{icon:'🏷️',name:'Calculadora Desconto',desc:'Calcule descontos em compras'},{icon:'⚖️',name:'Calculadora IMC',desc:'Índice de Massa Corporal'},{icon:'🔐',name:'Gerador de Senha',desc:'Gere senhas seguras'},{icon:'📐',name:'Conversor Unidades',desc:'Comprimento, peso, temperatura'}]}};
+let lang='en',adTimer=null,pendingTool=-1;
+function setLang(l){lang=l;document.querySelectorAll('.lang-btn').forEach((b,i)=>{b.className='lang-btn '+(['en','pt'][i]===l?'on':'off');});document.getElementById('hSub').textContent=T[l].sub;document.getElementById('backTxt').textContent=T[l].back;document.getElementById('closeStr').textContent=T[l].close;T[l].nav.forEach((t,i)=>{const el=document.getElementById('n'+i);if(el)el.textContent=t;});buildGrid();}
+function buildGrid(){const tools=T[lang].tools;const g=document.getElementById('toolGrid');g.innerHTML='';tools.forEach((t,i)=>{g.innerHTML+=`<div class="tool-card" onclick="openTool(${i})"><div class="icon">${t.icon}</div><div class="name">${t.name}</div><div class="desc">${t.desc}</div></div>`;});}
+function openTool(idx){pendingTool=idx;showAd(()=>loadTool(idx));}
+function showAd(cb){document.getElementById('adOverlay').style.display='flex';const btn=document.getElementById('adCloseBtn');let sec=5;btn.onclick=null;const cs=T[lang].close;btn.innerHTML=`✕ ${cs} (5)`;adTimer=setInterval(()=>{sec--;if(sec<=0){clearInterval(adTimer);btn.innerHTML=`✕ ${cs}`;btn.onclick=()=>{document.getElementById('adOverlay').style.display='none';cb();};}else btn.innerHTML=`✕ ${cs} (${sec})`;},1000);}
+function loadTool(idx){document.getElementById('homeScreen').classList.remove('active');document.getElementById('toolScreen').classList.add('active');document.getElementById('tIcon').textContent=T[lang].tools[idx].icon;document.getElementById('tName').textContent=T[lang].tools[idx].name;document.getElementById('backTxt').textContent=T[lang].back;const c=document.getElementById('toolContent');const l=lang;
+if(idx===0){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Enter CPF Number (11 digits)':'Digite o número do CPF (11 dígitos)'}</label><input type="text" id="cpfIn" maxlength="14" placeholder="000.000.000-00" oninput="formatCPF(this)"></div><button class="calc-btn" onclick="validateCPF()">${l==='en'?'✓ Validate CPF':'✓ Validar CPF'}</button><div class="valid-box" id="cpfResult"><p id="cpfMsg"></p></div><div class="tip">${l==='en'?'💡 CPF is the Brazilian individual taxpayer ID (11 digits).':'💡 CPF é o Cadastro de Pessoas Físicas — obrigatório no Brasil.'}</div>`;}
+else if(idx===1){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Enter CNPJ Number (14 digits)':'Digite o número do CNPJ (14 dígitos)'}</label><input type="text" id="cnpjIn" maxlength="18" placeholder="00.000.000/0001-00" oninput="formatCNPJ(this)"></div><button class="calc-btn" onclick="validateCNPJ()">${l==='en'?'✓ Validate CNPJ':'✓ Validar CNPJ'}</button><div class="valid-box" id="cnpjResult"><p id="cnpjMsg"></p></div><div class="tip">${l==='en'?'💡 CNPJ is the Brazilian company registration number (14 digits).':'💡 CNPJ é o número de registro de empresa no Brasil.'}</div>`;}
+else if(idx===2){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Gross Salary (BRL)':'Salário Bruto (R$)'}</label><input type="number" id="salIn" placeholder="5000"></div><div class="input-group"><label>${l==='en'?'Number of Dependents':'Número de Dependentes'}</label><input type="number" id="depIn" placeholder="0" value="0"></div><button class="calc-btn" onclick="calcSalary()">${l==='en'?'Calculate Net Salary':'Calcular Salário Líquido'}</button><div class="result-box" id="salResult"><div class="result-label" id="salLabel"></div><div class="result-value" id="salValue"></div><div class="result-sub" id="salSub"></div></div>`;}
+else if(idx===3){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Monthly Salary (BRL)':'Salário Mensal (R$)'}</label><input type="number" id="fgtsIn" placeholder="3000"></div><div class="input-group"><label>${l==='en'?'Years of Work':'Anos Trabalhados'}</label><input type="number" id="fgtsYr" placeholder="5"></div><button class="calc-btn" onclick="calcFGTS()">${l==='en'?'Calculate FGTS':'Calcular FGTS'}</button><div class="result-box" id="fgtsResult"><div class="result-label" id="fgtsLabel"></div><div class="result-value" id="fgtsValue"></div><div class="result-sub" id="fgtsSub"></div></div><div class="tip">${l==='en'?'💡 FGTS = 8% of monthly salary deposited by employer.':'💡 FGTS = 8% do salário depositado pelo empregador.'}</div>`;}
+else if(idx===4){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Amount (BRL R$)':'Valor (R$)'}</label><input type="number" id="currIn" placeholder="100"></div><div class="input-group"><label>${l==='en'?'Convert To':'Converter Para'}</label><select class="select-input" id="currTo"><option value="usd">🇺🇸 USD</option><option value="eur">🇪🇺 EUR</option><option value="inr">🇮🇳 INR</option><option value="gbp">🇬🇧 GBP</option><option value="ars">🇦🇷 ARS</option></select></div><button class="calc-btn" onclick="calcCurrency()">${l==='en'?'Convert':'Converter'}</button><div class="result-box" id="currResult"><div class="result-label" id="currLabel"></div><div class="result-value" id="currValue"></div><div class="result-sub">${l==='en'?'*Approximate rates':'*Taxas aproximadas'}</div></div>`;}
+else if(idx===5){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Principal Amount (BRL)':'Capital Inicial (R$)'}</label><input type="number" id="intP" placeholder="1000"></div><div class="input-group"><label>${l==='en'?'Interest Rate (% per month)':'Taxa de Juros (% ao mês)'}</label><input type="number" id="intR" placeholder="2.5"></div><div class="input-group"><label>${l==='en'?'Period (months)':'Período (meses)'}</label><input type="number" id="intT" placeholder="12"></div><button class="calc-btn" onclick="calcInterest()">${l==='en'?'Calculate':'Calcular'}</button><div class="result-box" id="intResult"><div class="result-label" id="intLabel"></div><div class="result-value" id="intValue"></div><div class="result-sub" id="intSub"></div></div>`;}
+else if(idx===6){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Original Price (BRL)':'Preço Original (R$)'}</label><input type="number" id="discP" placeholder="200"></div><div class="input-group"><label>${l==='en'?'Discount (%)':'Desconto (%)'}</label><input type="number" id="discR" placeholder="30"></div><button class="calc-btn" onclick="calcDiscount()">${l==='en'?'Calculate':'Calcular'}</button><div class="result-box" id="discResult"><div class="result-label" id="discLabel"></div><div class="result-value" id="discValue"></div><div class="result-sub" id="discSub"></div></div>`;}
+else if(idx===7){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Weight (kg)':'Peso (kg)'}</label><input type="number" id="bmiW" placeholder="70"></div><div class="input-group"><label>${l==='en'?'Height (cm)':'Altura (cm)'}</label><input type="number" id="bmiH" placeholder="175"></div><button class="calc-btn" onclick="calcBMI()">${l==='en'?'Calculate BMI':'Calcular IMC'}</button><div class="result-box" id="bmiResult"><div class="result-label" id="bmiLabel"></div><div class="result-value" id="bmiValue"></div><div class="result-sub" id="bmiSub"></div></div>`;}
+else if(idx===8){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Password Length':'Tamanho da Senha'}</label><input type="number" id="passLen" placeholder="16" min="8" max="32"></div><div class="input-group"><label>${l==='en'?'Include:':'Incluir:'}</label><label><input type="checkbox" id="passUpper" checked> ${l==='en'?'Uppercase (A-Z)':'Maiúsculas (A-Z)'}</label><br><br><label><input type="checkbox" id="passNum" checked> ${l==='en'?'Numbers (0-9)':'Números (0-9)'}</label><br><br><label><input type="checkbox" id="passSpec" checked> ${l==='en'?'Symbols (!@#$)':'Símbolos (!@#$)'}</label></div><button class="calc-btn" onclick="genPassword()">${l==='en'?'🔐 Generate Password':'🔐 Gerar Senha'}</button><div class="result-box" id="passResult"><div class="result-label">${l==='en'?'Your Password:':'Sua Senha:'}</div><div class="result-value" id="passValue" style="font-size:16px;word-break:break-all;"></div><div class="result-sub" id="passSub"></div></div>`;}
+else if(idx===9){c.innerHTML=`<div class="input-group"><label>${l==='en'?'Category':'Categoria'}</label><select class="select-input" id="unitCat" onchange="updateUnits()"><option value="length">${l==='en'?'Length':'Comprimento'}</option><option value="weight">${l==='en'?'Weight':'Peso'}</option><option value="temp">${l==='en'?'Temperature':'Temperatura'}</option></select></div><div class="input-group"><label>${l==='en'?'Value':'Valor'}</label><input type="number" id="unitVal" placeholder="100"></div><div class="input-group"><label>${l==='en'?'From':'De'}</label><select class="select-input" id="unitFrom"></select></div><div class="input-group"><label>${l==='en'?'To':'Para'}</label><select class="select-input" id="unitTo"></select></div><button class="calc-btn" onclick="calcUnit()">${l==='en'?'Convert':'Converter'}</button><div class="result-box" id="unitResult"><div class="result-label" id="unitLabel"></div><div class="result-value" id="unitValue"></div></div>`;updateUnits();}}
+function formatCPF(el){let v=el.value.replace(/\D/g,'');if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);if(v.length>7)v=v.slice(0,7)+'.'+v.slice(7);if(v.length>11)v=v.slice(0,11)+'-'+v.slice(11);el.value=v.slice(0,14);}
+function validateCPF(){const l=lang;let cpf=document.getElementById('cpfIn').value.replace(/\D/g,'');const r=document.getElementById('cpfResult');const m=document.getElementById('cpfMsg');r.style.display='block';if(cpf.length!==11||/^(\d)\1+$/.test(cpf)){r.className='valid-box invalid';m.textContent=l==='en'?'❌ Invalid CPF Number!':'❌ CPF inválido!';return;}let s=0;for(let i=0;i<9;i++)s+=parseInt(cpf[i])*(10-i);let r1=(s*10)%11;if(r1===10||r1===11)r1=0;if(r1!==parseInt(cpf[9])){r.className='valid-box invalid';m.textContent=l==='en'?'❌ Invalid CPF Number!':'❌ CPF inválido!';return;}s=0;for(let i=0;i<10;i++)s+=parseInt(cpf[i])*(11-i);let r2=(s*10)%11;if(r2===10||r2===11)r2=0;if(r2!==parseInt(cpf[10])){r.className='valid-box invalid';m.textContent=l==='en'?'❌ Invalid CPF Number!':'❌ CPF inválido!';}else{const states=['RS','DF/GO/MS/TO','AM/PA/RR/AP/AC/RO','CE/MA/PI','PB/PE/AL/RN','BA/SE','MG','RJ/ES','SP','PR/SC'];const state=states[parseInt(cpf[8])]||'N/A';r.className='valid-box valid';m.innerHTML=(l==='en'?'✅ Valid CPF!<br><small>📍 Region: <b>':'✅ CPF válido!<br><small>📍 Região: <b>')+state+'</b><br>🔢 '+cpf.slice(0,3)+'.'+cpf.slice(3,6)+'.'+cpf.slice(6,9)+'-'+cpf.slice(9)+'</small>';}}
+function formatCNPJ(el){let v=el.value.replace(/\D/g,'');if(v.length>2)v=v.slice(0,2)+'.'+v.slice(2);if(v.length>6)v=v.slice(0,6)+'.'+v.slice(6);if(v.length>10)v=v.slice(0,10)+'/'+v.slice(10);if(v.length>15)v=v.slice(0,15)+'-'+v.slice(15);el.value=v.slice(0,18);}
+function validateCNPJ(){const l=lang;let cn=document.getElementById('cnpjIn').value.replace(/\D/g,'');const r=document.getElementById('cnpjResult');const m=document.getElementById('cnpjMsg');r.style.display='block';if(cn.length!==14||/^(\d)\1+$/.test(cn)){r.className='valid-box invalid';m.textContent=l==='en'?'❌ Invalid CNPJ!':'❌ CNPJ inválido!';return;}const calc=(cn,n)=>{let s=0,p=n-7;for(let i=0;i<n;i++){s+=parseInt(cn[i])*p--;if(p<2)p=9;}return s%11<2?0:11-s%11;};if(calc(cn,12)!==parseInt(cn[12])||calc(cn,13)!==parseInt(cn[13])){r.className='valid-box invalid';m.textContent=l==='en'?'❌ Invalid CNPJ!':'❌ CNPJ inválido!';}else{r.className='valid-box valid';m.textContent=l==='en'?'✅ Valid CNPJ!':'✅ CNPJ válido!';}}
+function calcSalary(){const l=lang;const g=parseFloat(document.getElementById('salIn').value)||0;const dep=parseInt(document.getElementById('depIn').value)||0;if(!g)return;let inss=0;if(g<=1412)inss=g*0.075;else if(g<=2666.68)inss=g*0.09;else if(g<=4000.03)inss=g*0.12;else inss=g*0.14;const base=g-inss-dep*189.59;let irrf=0;if(base>4664.68)irrf=base*0.275-884.96;else if(base>3751.06)irrf=base*0.225-636.13;else if(base>2826.66)irrf=base*0.15-354.80;else if(base>2259.21)irrf=base*0.075-169.44;if(irrf<0)irrf=0;const net=g-inss-irrf;const r=document.getElementById('salResult');r.style.display='block';document.getElementById('salLabel').textContent=l==='en'?'Net Salary:':'Salário Líquido:';document.getElementById('salValue').textContent='R$ '+net.toFixed(2);document.getElementById('salSub').textContent='INSS: R$ '+inss.toFixed(2)+' | '+(l==='en'?'Tax':'IRRF')+': R$ '+irrf.toFixed(2);}
+function calcFGTS(){const l=lang;const sal=parseFloat(document.getElementById('fgtsIn').value)||0;const yr=parseFloat(document.getElementById('fgtsYr').value)||0;const monthly=sal*0.08;const total=monthly*12*yr*(1+0.03*yr);const r=document.getElementById('fgtsResult');r.style.display='block';document.getElementById('fgtsLabel').textContent=l==='en'?'Estimated FGTS:':'Saldo FGTS Estimado:';document.getElementById('fgtsValue').textContent='R$ '+total.toFixed(2);document.getElementById('fgtsSub').textContent=(l==='en'?'Monthly: R$ ':'Mensal: R$ ')+monthly.toFixed(2);}
+function calcCurrency(){const l=lang;const amt=parseFloat(document.getElementById('currIn').value)||0;const to=document.getElementById('currTo').value;const rates={usd:0.19,eur:0.18,inr:15.8,gbp:0.15,ars:181};const syms={usd:'$',eur:'€',inr:'₹',gbp:'£',ars:'$'};const names={usd:'USD',eur:'EUR',inr:'INR',gbp:'GBP',ars:'ARS'};const r=document.getElementById('currResult');r.style.display='block';document.getElementById('currLabel').textContent=(l==='en'?'Result (':'Resultado (')+names[to]+'):';document.getElementById('currValue').textContent=syms[to]+' '+(amt*rates[to]).toFixed(2);}
+function calcInterest(){const l=lang;const p=parseFloat(document.getElementById('intP').value)||0;const rate=parseFloat(document.getElementById('intR').value)||0;const t=parseFloat(document.getElementById('intT').value)||0;const compound=p*Math.pow(1+rate/100,t);const r=document.getElementById('intResult');r.style.display='block';document.getElementById('intLabel').textContent=l==='en'?'Total Amount:':'Montante Total:';document.getElementById('intValue').textContent='R$ '+compound.toFixed(2);document.getElementById('intSub').textContent=(l==='en'?'Interest: R$ ':'Juros: R$ ')+(compound-p).toFixed(2);}
+function calcDiscount(){const l=lang;const p=parseFloat(document.getElementById('discP').value)||0;const d=parseFloat(document.getElementById('discR').value)||0;const saved=p*d/100;const r=document.getElementById('discResult');r.style.display='block';document.getElementById('discLabel').textContent=l==='en'?'Final Price:':'Preço Final:';document.getElementById('discValue').textContent='R$ '+(p-saved).toFixed(2);document.getElementById('discSub').textContent=(l==='en'?'You save: R$ ':'Economia: R$ ')+saved.toFixed(2);}
+function calcBMI(){const l=lang;const w=parseFloat(document.getElementById('bmiW').value)||0;const h=(parseFloat(document.getElementById('bmiH').value)||0)/100;const bmi=(w/(h*h)).toFixed(1);let cat=bmi<18.5?(l==='en'?'Underweight':'Abaixo do peso'):bmi<25?(l==='en'?'Normal':'Normal'):bmi<30?(l==='en'?'Overweight':'Sobrepeso'):(l==='en'?'Obese':'Obeso');const r=document.getElementById('bmiResult');r.style.display='block';document.getElementById('bmiLabel').textContent=l==='en'?'Your BMI:':'Seu IMC:';document.getElementById('bmiValue').textContent=bmi;document.getElementById('bmiSub').textContent=cat;}
+function genPassword(){const l=lang;const len=parseInt(document.getElementById('passLen').value)||16;let chars='abcdefghijklmnopqrstuvwxyz';if(document.getElementById('passUpper').checked)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';if(document.getElementById('passNum').checked)chars+='0123456789';if(document.getElementById('passSpec').checked)chars+='!@#$%^&*()_+-=';let pass='';for(let i=0;i<len;i++)pass+=chars[Math.floor(Math.random()*chars.length)];const r=document.getElementById('passResult');r.style.display='block';document.getElementById('passValue').textContent=pass;document.getElementById('passSub').textContent=l==='en'?'Tap to copy!':'Toque para copiar!';document.getElementById('passValue').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(pass);};}
+function updateUnits(){const cat=document.getElementById('unitCat')&&document.getElementById('unitCat').value;const units={length:['m','km','cm','mm','ft','in','mi'],weight:['kg','g','lb','oz','ton'],temp:['°C','°F','K']};const from=document.getElementById('unitFrom');const to=document.getElementById('unitTo');if(!from||!to||!cat)return;from.innerHTML=to.innerHTML='';units[cat].forEach(u=>{from.innerHTML+=`<option>${u}</option>`;to.innerHTML+=`<option>${u}</option>`;});if(to.options.length>1)to.selectedIndex=1;}
+function calcUnit(){const l=lang;const val=parseFloat(document.getElementById('unitVal').value)||0;const cat=document.getElementById('unitCat').value;const from=document.getElementById('unitFrom').value;const to=document.getElementById('unitTo').value;let result=val;const base={m:1,km:1000,cm:0.01,mm:0.001,ft:0.3048,'in':0.0254,mi:1609.34,kg:1,g:0.001,lb:0.453592,oz:0.0283495,ton:1000};if(cat==='temp'){if(from==='°C'&&to==='°F')result=val*9/5+32;else if(from==='°F'&&to==='°C')result=(val-32)*5/9;else if(from==='°C'&&to==='K')result=val+273.15;else if(from==='K'&&to==='°C')result=val-273.15;else if(from==='°F'&&to==='K')result=(val-32)*5/9+273.15;else if(from==='K'&&to==='°F')result=(val-273.15)*9/5+32;else result=val;}else{result=val*base[from]/base[to];}const r=document.getElementById('unitResult');r.style.display='block';document.getElementById('unitLabel').textContent=l==='en'?'Result:':'Resultado:';document.getElementById('unitValue').textContent=result.toFixed(4)+' '+to;}
+function goHome(){document.getElementById('toolScreen').classList.remove('active');document.getElementById('homeScreen').classList.add('active');}
+function showFav(){alert(lang==='en'?'Favorites coming soon!':'Favoritos em breve!');}
+function shareApp(){const url='https://abhishektikhe1991-ops.github.io/smartkit-app/';const txt=lang==='en'?'Check out SmartKit - 10 Utility Tools in one app! '+url:'Confira SmartKit - 10 ferramentas em um app! '+url;if(navigator.share){navigator.share({title:'SmartKit',text:txt,url:url});}else{navigator.clipboard&&navigator.clipboard.writeText(url);alert(lang==='en'?'✅ Link copied! Paste & share with friends.':'✅ Link copiado! Cole e compartilhe.');}}
+buildGrid();
+</script>
+</body>
+</html>
